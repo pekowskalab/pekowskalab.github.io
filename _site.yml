@@ -14,7 +14,7 @@ navbar:
     - text: "Open positions"
       href: Open_positions.html
     - image: Mail.png
-      href: contact.html
+      href: Contact.html
 output: distill::distill_article
 css: styles.css
 output_dir: '.'
