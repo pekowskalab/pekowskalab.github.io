@@ -1,0 +1,36 @@
+---
+title: "We are hiring!"
+output: distill::distill_article
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+
+# There are multiple openings in the lab.
+
+
+## Lab technician
+We are seeking to rectuit a highly motivated person with a master's degree in biology, biotechnology or related disciplines that will help build the lab infrastructure and contribute to the following activities: 
+
+- mamalian stem cell cultures \n
+
+- CRISPR-Cas9 based genome editing \n
+
+- molecular biology experiments (ChIP-seq, RNA-seq, ATAC-sea, Hi-C).
+
+## Ph.D. students
+We are seeking two Ph.D. students to join our lab and to identify and characterize genetic and epigenetic bases of astrocyte identity and functions. The successful candidates will be using cutting edge high throughput sequencing based methods (ChIP-seq, RNA-seq, ATAC-seq, Hi-C) and cellular models to decipher the regulatory principles underlying astrocyte biology in mammals.  
+
+Contact us (a.pekowska [at] nencki.gov.pl) and apply through the web system at the Nencki Institute: http://www.nencki.gov.pl/rejestracja-online
+
+## PostDoc 
+Are you 
+
+- an experimental biologist with expertise in high throughput seqencing technologies, stem cell techniques or genome editing or 
+
+- a computational biologist 
+
+seeking to undertake a highly collaborative project? 
+
+We have one opening for a posdtoc position. Contact Aleksandra Pękowska (a.pekowska [at] nencki.gov.pl) to chat about the detials of the position.
+ 

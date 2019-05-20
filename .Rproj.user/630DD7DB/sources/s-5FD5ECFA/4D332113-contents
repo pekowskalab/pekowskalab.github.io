@@ -1,0 +1,28 @@
+---
+title: "Code"
+output: distill::distill_article
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+
+<div class = "row">
+
+<div class = "col-md-1">
+
+
+<img src="CS_paper.png" style="width:50%; border:0px solid; margin-right: 20px" align="left">
+
+<div class = "col-md-1">
+<br><br> Source code for **Gain of CTCF-Anchored Chromatin Loops Marks the Exit from Naive Pluripotency** can be found [**here**](https://www.huber.embl.de/projects/stemcell3Dloops/)
+
+</div>
+</div>
+
+<br/><br/>
+
+___________________________________________
+<br/>
+Exemple code for analysis and visualisation of ChIP-seq data (CSAMA course 2016) can be found [**here**](https://www.bioconductor.org/help/course-materials/2016/CSAMA/lab-5-chipseq/Epigenetics.html)
+
+

@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1558215671664.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "4D332113",
+    "lastKnownWriteTime" : 1558237772,
+    "last_content_update" : 1558237772574,
+    "path" : "~/Site/pekowskalab.github.io/Code.Rmd",
+    "project_path" : "Code.Rmd",
+    "properties" : {
+        "cursorPosition" : "16,24",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 7,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}
