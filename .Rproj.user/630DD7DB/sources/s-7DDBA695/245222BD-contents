@@ -1,0 +1,396 @@
+---
+title: "ERC grant - analysis transcript"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Preamble
+
+In the end none of tis worked. I downloaded the genome fa file and gtf file from ensembl. Then I aligned the reads.
+
+```{r, evlal=FALSE}
+
+# R-3.3.12
+# source("http://bioconductor.org/biocLite.R")
+# biocLite(pkgs=c("GEOquery","SRAdb","GEOmetadb"))
+
+library(GEOquery)
+library(SRAdb)
+library(GEOmetadb)
+
+## do this once, the files is enormous...
+sqlfile = file.path(system.file('extdata', package='SRAdb'), 'SRAmetadb_demo.sqlite')
+sqlfile = getSRAdbFile()
+## find ~/ -name *SRAmetadb*
+# sra_con = dbConnect(SQLite(),sqlfile)
+
+gse = getGEO("GSE73721", GSEMatrix = TRUE)
+show(pData(phenoData(gse[[1]])))
+
+
+```
+
+# Important facts
+
+cell culture reprograms chromatin: **https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4334405/**
+
+Set paths etc. Consider all the TFs in human (**https://media.nature.com/full/nature-assets/nrg/journal/v10/n4/extref/nrg2538-s3.txt**).
+
+```{r}
+
+# library(pheatmap)
+library(LSD)
+library(DESeq2)
+library(GenomicFeatures)
+library(rtracklayer)
+
+wd = '~/Documents/Future/Nencki/ERC/scripts/'
+count_dir = '~/Documents/Future/Nencki/ERC/counts/'
+res_dir = '~/Documents/Future/Nencki/ERC/results/'
+fig_dir = '~/Documents/Future/Nencki/ERC/figures/'
+load("/Users/pekowska/Documents/Future/Nencki/Cognition/annotations.RData")
+load('~/Documents/Future/Nencki/Cognition/Hg19_comprehensive_gene_anno.RData')
+tf = read.delim( paste0(wd,'TFs_Human_2009') ) 
+
+```
+
+
+# Import data
+
+I downloaded data from **PRJNA297760**, aligned, filtered (best alignment q > 10) and counted the reads in genes as annotated in the most recent genome assemblies (mm10 and hg19). Now I read the sample annotation and will find the corresponding count files.
+
+```{r, BB_sampleInfo}
+
+sa = read.delim(paste0(wd,'PRJNA297760_plasticity.txt'), as.is=T, header=T)
+
+```
+
+
+Now read the count tables
+
+
+```{r}
+
+ctb = do.call('cbind',lapply( as.list( c( 1:6,10:17,19:22 ) ),
+                              function(c){
+                                read.delim( 
+                                  paste0(count_dir,sa[c,2],'_counts.txt'),header=F)[,2]  }))
+
+colnames(ctb) = do.call('c',lapply( as.list( c( 1:6,10:17,19:22 ) ),
+                                    function(c){ paste0( unlist(strsplit(sa[c,7], ' ')), 
+                                                         collapse='_') }) )
+rownames(ctb) = read.delim( paste0(count_dir,sa[1,2],'_counts.txt'), header=F )[,1]
+
+
+```
+
+
+# Genes differnetially expressed between fetal and adult astrocytes from the cortex
+
+Let's make the condition table
+
+
+```{r}
+
+cond = data.frame( sample = colnames(ctb[,1:14]), 
+                   cond = factor( c(rep('human_cortex_fetal',6),
+                                    rep('human_cortex_adult',8)) ) )
+
+
+dds = DESeqDataSetFromMatrix(countData = ctb[,1:14],
+                              colData = cond,
+                              design = ~ cond)
+dds
+
+dds = DESeq(dds)
+```
+
+**It seems that the same groups of TFs are differentially expressed in fetal and adult astrocytes, what differs is the precies isoform, Zic1 versus Zic5 etc** What does it confer this paralog switch? Partners are similar? What changes? Motifs? Why do they change?
+
+We identify a substantial fraction of genes that are differentally expressed between fetal and adult astrocytes
+
+
+```{r}
+
+res = results(dds)
+sum( results( dds )$padj<0.05, na.rm=T)
+fetal_adult = counts(dds, normalized=T )
+fetal_adult_all = fetal_adult
+all( rownames(fetal_adult)==rownames(res) )
+
+
+fetal_adult = fetal_adult[ !(is.na(res$padj)), ]
+df = res[ !(is.na(res$padj)),]
+
+fetal_adult = fetal_adult[df$padj<0.05 & abs(df$log2FoldChange)>1.5 & df$baseMean>24,] 
+df = df[df$padj<0.05 & abs(df$log2FoldChange)>1.5 & df$baseMean>24,]
+all( rownames(fetal_adult)==rownames(df) )
+
+## okay
+
+adult_genes = rownames( df[df$log2FoldChange<(-1.5),])
+fetal_genes = rownames( df[df$log2FoldChange>(1.5),])
+
+write.table(adult_genes,file=paste0(res_dir,'adult_genes_astro.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+write.table(fetal_genes,file=paste0(res_dir,'fetal_genes_astro.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+
+# http://www.jneurosci.org/content/32/18/6391
+# table here SCI_WT_Astrocytes_vs_Uninjured_WT_Astrocytes - compare ractive astro tofetal and mature
+
+## Bach2
+fetal_adult[rownames(fetal_adult)=='ENSG00000112182',]
+
+## Bcl11a
+fetal_adult[rownames(fetal_adult)=='ENSG00000119866',]
+
+## Pax3, Pax7 binding protein
+fetal_adult[rownames(fetal_adult)=='ENSG00000159086',]
+
+## Sox11
+fetal_adult[rownames(fetal_adult)=='ENSG00000176887',]
+
+# Insm1, Prox1, or Sox11 efficiently elicits neuronal conversion of astrocytes
+
+## Brd4 - not convincing
+fetal_adult[rownames(fetal_adult)=='ENSG00000141867',]
+
+fetal_adult[rownames(fetal_adult)=='',]
+
+## NFATC2
+fetal_adult[rownames(fetal_adult)=='ENSG00000101096',]
+
+## EZH1, is slightly up
+fetal_adult[rownames(fetal_adult)=='ENSG00000108799',]
+
+## EZH2, shut down by 20-30 times...
+fetal_adult[rownames(fetal_adult)=='ENSG00000106462',]
+
+```
+
+
+Look at how TFs change
+
+
+```{r}
+
+adult_tfs = tf[tf$Ensembl.ID %in% adult_genes, ]
+fetal_tfs = tf[tf$Ensembl.ID %in% fetal_genes, ]
+
+fetal_tfs$HGNC.symbol
+adult_tfs$HGNC.symbol
+
+```
+
+
+## Fetal versus diseased
+
+
+```{r}
+
+cond_FD = data.frame( sample = colnames(ctb[,c(1:6, 15:ncol(ctb))]), 
+                      cond = factor( c(rep('human_cortex_fetal',6),
+                                       rep('tumor',4)) ) )
+
+DF = DESeqDataSetFromMatrix(countData = ctb[,c(1:6, 15:ncol(ctb))],
+                            colData = cond_FD, 
+                            design = ~ cond )
+DF = DESeq(DF)
+
+
+res = results(DF)
+fetal_diseased = counts(DF, normalized=T )
+
+fetal_diseased = fetal_diseased[ !(is.na(res$padj)), ]
+fd = res[ !(is.na(res$padj)),]
+
+fetal_diseased = fetal_diseased[fd$padj<0.05 & abs(fd$log2FoldChange)>1.5 & fd$baseMean>24,] 
+fd = fd[fd$padj<0.05 & abs(fd$log2FoldChange)>1.5 & fd$baseMean>24,]
+all( rownames(fetal_adult)==rownames(df) )
+
+## okay
+
+fetal_diseased_genes = rownames( fd[fd$log2FoldChange<(-1.5),])
+diseased_fetal_genes = rownames( fd[fd$log2FoldChange>(1.5),])
+
+write.table(fetal_diseased_genes,file=paste0(res_dir,'fetal_vs_diseased_fetal_genes.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+write.table(diseased_fetal_genes,file=paste0(res_dir,'fetal_vs_diseased_diseased_genes.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+
+
+fetal_fd_tfs = tf[tf$Ensembl.ID %in% fetal_diseased_genes, ]
+diseased_fd_tfs = tf[tf$Ensembl.ID %in% diseased_fetal_genes, ]
+
+fetal_fd_tfs$HGNC.symbol
+diseased_fd_tfs$HGNC.symbol
+
+fetal_diseased[rownames(fetal_diseased)=='ENSG00000106462',]
+
+```
+
+
+## Adult versus diseased
+
+
+```{r}
+
+cond_AD = data.frame( sample = colnames(ctb[,7:ncol(ctb)]), 
+                      cond = factor( c(rep('human_cortex_fetal',8),
+                                       rep('tumor',4)) ) )
+
+AD = DESeqDataSetFromMatrix(countData = ctb[,7:ncol(ctb)],
+                            colData = cond_AD, 
+                            design = ~ cond )
+AD = DESeq(AD)
+
+
+res = results(AD)
+adult_diseased = counts(AD, normalized=T )
+adult_diseased_all = adult_diseased
+adult_diseased = adult_diseased[ !(is.na(res$padj)), ]
+ad = res[ !(is.na(res$padj)),]
+
+adult_diseased = adult_diseased[ad$padj<0.05 & abs(ad$log2FoldChange)>1.5 & ad$baseMean>24,] 
+ad = ad[ad$padj<0.05 & abs(ad$log2FoldChange)>1.5 & ad$baseMean>24,]
+all( rownames(adult_diseased)==rownames(ad) )
+
+## okay
+
+adult_diseased_genes = rownames( ad[ad$log2FoldChange<(-1.5),])
+diseased_adult_genes = rownames( ad[ad$log2FoldChange>(1.5),])
+
+write.table(adult_diseased_genes,file=paste0(res_dir,'adult_vs_diseased_adult_genes.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+write.table(diseased_adult_genes,file=paste0(res_dir,'adult_vs_diseased_diseased_genes.txt'),quote=F, row.names = F, col.names = F, sep='\n')
+
+
+adult_ad_tfs = tf[tf$Ensembl.ID %in% adult_diseased_genes, ]
+diseased_ad_tfs = tf[tf$Ensembl.ID %in% diseased_adult_genes, ]
+
+adult_ad_tfs$HGNC.symbol
+diseased_ad_tfs$HGNC.symbol
+
+```
+
+
+How do the TFs activated in diseased compare to TFs with hisgher expression in fetal versus adult?
+
+Beautifully striking! Sox11, Sox4, Ezh2 gene, Arid5B, NFATC2, Klf6
+
+```{r}
+
+diseased_ad_tfs$HGNC.symbol[ diseased_ad_tfs$HGNC.symbol %in% fetal_tfs$HGNC.symbol ]
+
+```
+
+### Polycomb story
+
+- *EZH2* - now that is a really interesting hit. THere is a switch in development, fetal have EZH2 then EZH1 pops in. EZH2 is 20-30 times more expressed in early astrocytes. It is upregulated in diseased astrocytes as compared to normal. People have already realized the link between polycomb proteins and neurogenesis (**https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6093351/**). This might be a blast!! Inhibotor of EZH2 exists... In disease EZH2 is expressed even higher than in the fetal tissue... 
+
+We know that depletion of PcG proteins during the neurogenic period leads to a prolonged neurogenic phase of NPCs and a delayed onset of astrogenesis (Hirabayashi et al., 2009; Sparmann et al., 2013). 
+
+One of H3K27me3 targets is Neurog1 a key proneural transcription factor that can suppress astrocytic differentiation. 
+
+Context matters: In NPCs in vitro, PcG proteins mediate the suppression of the key astrogenic marker Gfap (Mohn et al., 2008; Sparmann et al., 2013), which has been proposed to prevent the premature onset of gliogenesis (Sparmann et al., 2013). In the developing neocortex, however, the promoters of Gfap as well as of other genes characteristic of astrocytes are not marked by H3K27me3 at mid-neurogenesis (ENCODE Project Consortium, 2012; Albert et al., 2017). 
+
+EZH2 how its expression is regulated by micro RNA: **https://www.ncbi.nlm.nih.gov/pubmed/24878960**
+
+NS have a lot of EZH2, Neurons and astrocytes downregulate it **https://www.ncbi.nlm.nih.gov/pubmed/24878960** This is in accordance with the differentiation repressive role Ezh2 is thought to play in the maintenance and self-renewal of stem cells. In this paper they show that, upon forced expression of this polycomb group protein, cultured astrocytes retracted their cell extensions and became proliferating round/bipolar cells that occasionally formed small neurosphere-like clusters. Analysis of the expression profile of these Ezh2-expressing astrocytes reveal downregulation of typical astrocytic genes, like GFAP and S100, and upregulation of genes that are generally expressed in neural stem cells, like nestin, Sox2, musashi, and CD133. However, these **neural stem cell-like cells lack a differentiation potential, indicating that overexpression of Ezh2 alone is insufficient for a complete dedifferentiation**. 
+
+Pereira 2010 PNAS: Loss of function of Ezh2 removes the repressive mark of trimethylated histone H3 at lysine 27 (H3K27me3) in cortical progenitor cells and also prevents its establishment in postmitotic neurons. Removal of this repressive chromatin modification results in marked up-regulation in gene expression, the consequence of which is a shift in the balance between self-renewal and differentiation toward differentiation, both directly to neurons and indirectly via basal progenitor cell genesis. Although the temporal order of neurogenesis and gliogenesis are broadly conserved under these conditions, the timing of neurogenesis, the relative numbers of different cell types, and the switch to gliogenesis are all altered, narrowing the neurogenic period for progenitor cells and reducing their neuronal output. => [What I think is that in fact, that they express EZH2 blocks their neurogenic potential] 
+Pereira deleted EZH2 in cortical precursors (E9.5), K27me3 dissapeared in neurons by E12. Strikingly, by E14 the Ezh2-null cortex is substantially thicker than in controls, and this thickness is attributable to a significantly enlarged number of neurons in the cortical plate in the Ezh2-null cortex. Yet, by E16 the control and Ezh2-null cortices are similar in size, and by birth the Ezh2-null cortex is substantially thinner than in littermate controls and has fewer total cells. **CONTEXT ULTRA IMPORTANT** Therefore, Ezh2-null cortical progenitor cells appear to generate inappropriately more neurons than controls initially but later underproduce neurons to generate an overall smaller cortex. VZ is maintained in number from E12 to E14 but by E16 is significantly depleted in the Ezh2-null cortex. Or they fail to produce astrocytes and neurons dye because no proneural signalling is present.
+
+
+Once specified, neural progenitors are restrained from further differentiation by Polycomb-mediated repression of genes associated with neuronal or glial differentiation. **The blockage is inscribed into cll fate transitions!** During neurogenesis, a subset of progenitors activates neuronal genes in response to external and internal cues, while other progenitors maintain repression of neuronal genes and have the capacity to contribute to gliogenesis. As neurogenesis is completed and gliogenesis subsequently begins, these gliogenic progenitors resolve bivalent genes with roles in astrocyte or, subsequently, oligodendrocyte differentiation to an actively transcribed state. This process appears to be particularly important for the specification of oligodendrocyte precursor cells (OPCS), which maintain substantially elevated levels of Ezh2 in comparison to differentiating neurons and astrocytes (Sher, Rössler et al. 2008). The hypothesis that the varying competence of different progenitor cell populations is determined by Polycomb-mediated repression of distinct targets.
+
+Temporal cell fate transitions: Neo-cortical progenitors generate lower-layer neurons after fewer cell divisions than upper-layer neurons, and progenitors from older mice exhibit reduced capacity to generate earlier-born neuronal subtypes (Shen, Wang et al. 2006). Furthermore, experiments using mouse and human neural stem cells demonstrated that the **temporal order in which neural progenitors generate subtypes of neocortical neurons in vivo is retained in vitro**, implying that the progressive, cell-intrinsic restriction of neural progenitor competence is a general feature of mammalian neural development (Eiraku, Watanabe et al. 2008, Gaspard, Bouschet et al. 2008).
+The switch from neurogenesis to gliogenesis also appears to involve cell-intrinsic mechanisms. mounting evidence suggests the Polycomb complexes form one of the key regulatory axes responsible for sequential limitation of the gliogenic and neurogenic competence of neural progenitors in the developing cortex. Ezh2 is highly expressed in neural progenitors, but is down-regulated during the differentiation of cortical neurons (Pereira, Sansom et al. 2010). Premature loss of Ezh2 from the start of the neurogenic period (through conditional deletion from embryonic day 9.5 (E9.5) in the mouse) accelerates neurogenesis and neuronal differentiation, exhausting the apical and basal progenitor pools and resulting in a thinned cortex (Pereira, Sansom et al. 2010, Testa 2011). **The accelerating effect of Ezh2 deletion is not limited to neurogenic precursors but also includes glial lineages**, as evinced by the **drastically expedited appearance of mature astrocytes in the mouse E16 ventricular zone (over 4 days ahead of schedule) (Pereira, Sansom et al. 2010, Testa 2011)**.
+
+!!! **Loss of Ezh2 or the PRC1 component Ring1b at later stages of cortical development prolongs neurogenesis, rather than accelerating it**. This protracted neurogenic phase occurs at the expense of astrogliogenesis, the onset of which is delayed (Hirabayashi, Suzki et al. 2009). Control of the transition between the neurogenic versus gliogenic phase of development is exerted by direct recruitment of PcG complexes to the promoters of the Neurogenin 1 and 2 genes, progressively inhibiting their expression as corticogenesis proceeds (Hirabayashi, Suzki et al. 2009). Polycomb-mediated repression of neurogenic genes in turn facilitates activation of astrocytic genes such as Glial fibrillary acidic protein (GFAP), e.g. by alleviating Neurogenin’s sequestration of coactivators of the pro-astrocytic Stat3 transcription factor (Sun, Nadal-Vicens et al. 2001). **So we can speculate that by removing H3K27me3 we could potentially promote neurogenesis**.
+
+This process is mediated, at least in part, by the Jmjd3 H3K27me3 demethylase, whose ability to facilitate activation of neural progenitor-associated genes like Nestin is indispensable for neural fate acquisition (Burgold, Spreafico et al. 2008). Neuronal differentation - alleviate  Zuotin-related factor 1 (Zrf1) was recently found to be required for chromatin displacement of PRC1 to activate neural genes such as Pax6 during neural cell specification (Aloia, Di Stefano et al. 2014).
+
+Bivalent genes. 
+
+PRC interacting genes.
+
+```{r, Polycombs}
+fetal_adult[rownames(fetal_adult)=='ENSG00000106462',]
+adult_diseased[ rownames(adult_diseased)=='ENSG00000106462', ]
+fetal_adult[rownames(fetal_adult)=='ENSG00000116254',]
+adult_diseased[rownames(adult_diseased)=='ENSG00000116254',]
+
+```
+
+The H3K27me3 readers and ereasers: 
+Whereas Chd5 is expressed in neurons and controls neuronal differentiation (Egan et al., 2013), Chd4 is expressed in NPCs during early neurogenesis where it has been proposed to function in PcG-mediated inhibition of astroglial differentiation (Sparmann et al., 2013). This switch in subunit composition may contribute to the re-targeting of PcG complexes during neocortex development. 
+
+H3K27me3-specific histone demethylase Jmjd3 has been implicated in the activation of neuronal gene expression (Jepsen et al., 2007; Park et al., 2014), and associates with the transcription factor Tbr2 in the developing neocortex (Sessa et al., 2017), further contributing to the dynamic regulation of H3K27me3. It is only partially reactivated..
+
+
+```{r}
+## CHD4 - no change in expression
+ctb[rownames(ctb)=='ENSG00000111642',]
+fetal_adult_all[rownames(fetal_adult_all)=='ENSG00000111642',]
+adult_diseased_all[rownames(adult_diseased_all)=='ENSG00000111642',]
+## CHD5
+ctb[rownames(ctb)=='ENSG00000116254',] ## not expressed at all in astro
+## ------------------------------------------------------------------
+## KDM6B (Jmjd3) -> only partially reactivated 
+fetal_adult_all[rownames(fetal_adult_all)=='ENSG00000132510',]
+adult_diseased_all[rownames(adult_diseased_all)=='ENSG00000132510',]
+
+```
+
+The level of H3K27me3 must be sky rocketing in stressed astrocytes.. This paper (*https://www.ncbi.nlm.nih.gov/pubmed/28032293*) describes that Ring1 is increased in reactive astrocytes. RING1 protein level detected by western blot peaked at day 3 after trauma and then decreased gradually.
+
+Cool review: **https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4286515/**
+The enzymatic ortholog of Drosophila TrxG in mammals is variable, and can include mixed lineage leukemia (MLL) proteins 1–4, Set1A, and Set1B, all of which bind additional activating proteins to form the multi-subunit MLL1–4 and Set1A/B complexes (Schuettengruber, Martinez et al. 2011). In contrast, repression of many developmental loci is mediated by the activity of PcG protein complexes. PcG-mediated repression of developmental genes directly antagonizes TrxG-mediated gene activation, preventing ectopic expression of genes associated with alternative lineages (Margueron and Reinberg 2011, Simon and Kingston 2013). Mammalian PRC2 consists of three core subunits that are essential for proper catalytic activity and gene repression in vivo: enhancer of zeste 2 (Ezh2) or its homolog Ezh1, embryonic ectoderm development (Eed), and suppressor of zeste 12 (Suz12). Ezh2 and Ezh1 contain a conserved SET domain capable of catalyzing the mono-, di-, and tri-methylation of H3K27 (Margueron, Li et al. 2008, Shen, Liu et al. 2008). H3K27me3 is the most well characterized histone PTM catalyzed by PRC2, and this mark plays a crucial role in the establishment of facultative heterochromatin throughout development (Cao, Wang et al. 2002, Czermin, Melfi et al. 2002, Kuzmichev, Nishioka et al. 2002, Kirmizis, Bartley et al. 2004). 
+
+The deposition of H3K27me3 by PRC2 promotes the recruitment of a second Polycomb complex, PRC1, at a subset of targeted loci characterized by longer tracts of GC-rich DNA (Ku, Koche et al. 2008). 
+
+PRC1 complexes are considerably more heterogeneous in composition than PRC2 (reviewed in (Simon and Kingston 2013) and discussed in some detail below). However, all mammalian PRC1 complexes **include a homolog of the Drosophila Ring protein, which catalyzes the mono-ubiquitylation of lysine 119 of histone H2A (H2AK119ub)**. While the exact consequences of H2AK119ub are not clear, PRC1 is thought to inhibit gene expression through a number of mechanisms, including by impairing transcriptional elongation, increasing chromatin compaction, decreasing nucleosome turnover, and modifying higher order chromatin structure (Simon and Kingston 2013). 
+
+In this paper **https://elifesciences.org/articles/02439** - Hwang 2014 eLife, they show that EZH2 is required to elicit neurogenesis: Here we show that astrocytes that serve as neural stem cells (NSCs) in the adult mouse subventricular zone (SVZ) express the histone methyltransferase EZH2. This Polycomb repressive factor is required for neurogenesis independent of its role in SVZ NSC proliferation, as Ink4a/Arf-deficiency in Ezh2-deleted SVZ NSCs rescues cell proliferation, but neurogenesis remains defective. Olig2 is a direct target of EZH2, and repression of this bHLH transcription factor is critical for neuronal differentiation. 
+
+Chromatin structure at HOX loci...
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4937102/ - We propose that inflammatory signalling may control the normal, progressive restriction in potential of differentiating astrocytes as well as under reactive conditions and represent future targets for therapies to harness the latent neurogenic capacity of parenchymal astrocytes. Wazne nt. plasticity
+
+JMJD3, Natoli's paper:
+**https://www.sciencedirect.com/science/article/pii/S0092867407010823?via%3Dihub**
+
+
+## TFs 
+
+What are the TFs that are higher in fetal but were not up-regulated in diseased?
+
+
+```{r}
+
+fetal_tfs$HGNC.symbol[ !fetal_tfs$HGNC.symbol %in% diseased_ad_tfs$HGNC.symbol ]
+
+```
+
+Genes that *fail to upregulate upon prolonged stress*
+- *ARX* - it is linked to intelegence (X-linked intelectual disorder and epilepsy). Mutations in the Aristaless-related homeobox gene (ARX) are a common cause of X-linked intellectual disability. Over 40 different mutations have been identified in ARX resulting in a spectrum of disorders that vary from mild intellectual disability with no brain malformations to severe brain malformations such as lissencephaly and hydranencephaly (Gecz et al. 2006). Currently the pathogenesis of these ARX-related disorders are poorly defined. ARX-/- mice have smaller brains cortical VZ cells do not proliferate in them they (**https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4351425/**) say that these cells do not proliferate in the KO mice because CDKN1C guy does not get shut down. 
+- *Bach2* is neuron specific transcriptional repressor, induced by oxidative stress, interacts with Maf proteins... Bach2 a gatekeeper of the differentiation status of neuronal cells (**https://www.sciencedirect.com/science/article/pii/S0014482706001194**) it would block neuronal differentation of progenitor cells. It would thus make sense that this factor is expressed in fetal astrocytes, the fact that it does not get upregulated in diseased is thus positive. Yet, its role in transdifferentiation might be positive. Who knows what an overexpression of Bach2 would do to A1 and A2 astrocytes...
+- *HMGB2* - this gene blocks astrocyte fate, (**https://www.frontiersin.org/articles/10.3389/fnmol.2017.00153/full**). Not a strong effect but pronounced at early stages. They say in that paper that "the germline loss of the HMGB2 gene and the resulting chromatin architectural protein that it encodes contribute to a significant reduction in the expression of the vital PcG gene EED, with concomitant reduction in total H3K27me3 levels in NSPC histone lysates".
+- *FOXG1* - together with Sox2 pushes cells into NS cell state and restricts differentition potential - increased expression of these factors restricts astrocyte differentiation and can trigger dedifferentiation to a proliferative NS cell state (*https://www.ncbi.nlm.nih.gov/pubmed/28465359*) upon transplantation in vivo, FOXG1-null GMNS cells display increased astrocyte differentiation and up-regulate FOXO3. In contrast, SOX2 ablation attenuates proliferation, and mutant cells cannot be expanded in vitro. Thus, FOXG1 and SOX2 operate in complementary but distinct roles to fuel unconstrained self-renewal in GBM stem cells via transcriptional control of core cell cycle and epigenetic regulators
+- *BCL11A* - regulates axon outgrowtn and branching. It inhibits TBR1 (also involved in interectual dissability). Heterozygous mutations are associated with interectual dissability and autism spectrum disorder. Highly expressed in fetal astro in mouse and in human.
+
+# Astrocyte activation and H3K27me3
+
+Natoli shows that JMJ3 demethylates H3K27me3 targets in macrophages and plays a role in transdifferentiation. This enzyme is only partially reactivated in activated astrocytes.
+
+Download profiles of enhancers in neurons and astrocytes. Idea: what are the mechanisms that shut down neuronal enhancers in astrocytes? Given the reactive character of these astrocytes, what happens at these regions?
+
+Neuronal ChIPs in vivo brain 5d:**https://www.encodeproject.org/reference-epigenomes/ENCSR155HHQ/**
+Neurons stimulation **https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE78688**
+There is also CAGE data that I could use right away...
+RNA-seq:**https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSM1582471**
+DNAseq hippocampas astrocytes:**https://www.encodeproject.org/experiments/ENCSR000ENA/**
+DNAse-seq cerebellum astrocytes:**https://www.encodeproject.org/experiments/ENCSR000ENC/**
+Hi-C spinal astrocytes: **https://www.encodeproject.org/experiments/ENCSR974LXZ/**
+

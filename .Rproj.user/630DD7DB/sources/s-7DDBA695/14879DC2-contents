@@ -1,0 +1,155 @@
+---
+title: "FPKM"
+author: "Aleksandra Pekowska"
+date: "12/27/2018"
+output: html_document
+---
+
+
+```{r}
+library(rtracklayer)
+library(GenomicRanges)
+library(liftOver)
+library(AneuFinderData)
+dhs_directory = '/Volumes/PHOTOS_USA/Chromatin_data_astrocytes/bed/'
+
+```
+
+
+Identify astrocyte specific DHS.
+
+```{r}
+dhs_meta = read.delim("/Volumes/PHOTOS_USA/Chromatin_data_astrocytes/bed/DNASe_bed_metadata.tsv",as.is=TRUE)
+dhs_meta = dhs_meta[dhs_meta$Biosample.type != "cell line", ]
+nrow(dhs_meta)
+
+```
+
+
+```{r}
+tissues = unique(dhs_meta$Biosample.term.name)
+
+i=1
+
+
+this.tissue = dhs_meta[dhs_meta$Biosample.term.name==tissues[i],]
+## read all the hg19 files
+hg19_files = do.call('c', lapply(as.list(this.tissue$File.accession[this.tissue$Assembly=='hg19']),
+                                 function(f){ importBed(paste0(dhs_directory,f,'.bed.gz')) }))
+
+```
+
+
+
+Load GWAS, lift it over to hg19.
+https://master.bioconductor.org/packages/release/workflows/vignettes/liftOver/inst/doc/liftov.html
+
+```{r}
+library(gwascat)
+cur = makeCurrentGwascat()
+
+```
+
+
+
+So far my analyses:
+**IQCK** 11 fold induced in human mature astrocytes, not expressed in neurons!!
+
+
+```{r setup, include=FALSE}
+library(rtracklayer)
+library(GenomicFeatures)
+fig_dir = '~/Documents/Future/Nencki/ERC/figures/'
+res_dir = '~/Documents/Future/Nencki/ERC/results/'
+count_dir = '~/Documents/Future/Nencki/ERC/counts/'
+wd = '~/Documents/Future/Nencki/ERC/scripts/'
+
+y=read.delim('/Users/pekowska/Documents/Future/Nencki/Cognition/Barres_RNA-seq/mature.txt')
+x=read.delim('/Users/pekowska/Documents/Future/Nencki/Cognition/Barres_RNA-seq/fetal.txt')
+tf = read.delim( paste0(wd,'TFs_Human_2009') )
+load('~/Documents/Future/Nencki/Cognition/Hg19_comprehensive_gene_anno.RData')
+load("/Users/pekowska/Documents/Future/Nencki/Cognition/annotations.RData")
+
+x$HOM=HOM[match(x$Gene,HOM$Symbol.y),2]
+x$hs=rowMeans(x[,2:7])
+x$mm=rowMeans(x[,8:9])
+xtfs = x[x$HOM %in% tf$HGNC.symbol,]
+x_expr_tfs = x[x$hs>2,]
+
+y$hs=rowMeans(y[,2:13])
+y$mm=rowMeans(y[,14:17])
+y$HOM=HOM[match(y$Gene,HOM$Symbol.y),2]
+ytfs = y[y$HOM %in% tf$HGNC.symbol,]
+
+hs_tf = data.frame(Gene=x$HOM, fetal=x$hs, adult=y$hs, stringsAsFactors=FALSE)
+hs_tf = hs_tf[hs_tf$Gene %in% tf$HGNC.symbol,]
+
+
+```
+
+Now identify TFs expressed in adult astrocytes
+
+```{r}
+
+grn_adult = hs_tf[hs_tf$adult>5 & hs_tf$fetal < 5 ,]
+grn_adult$Gene
+
+```
+
+**BCL6** expressed more in mature astrocytes than in neurons. This protein acts as a sequence-specific repressor of transcription and has been shown to modulate the STAT-dependent Interleukin 4 (IL-4) responses of B cells. Bcl6 promotes glioma
+
+**EPAS1** high altitude gene, hypoxia versus alzheimer: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2801159/
+
+**Astrocyte enriched genes** http://www.networkglia.eu/en/astrocyte
+
+
+Now identify genes expressed higher in human mature or fetal astrocytes that might be implicated in cognition.
+
+```{r}
+
+cognition_genes = read.delim( '~/Documents/Future/Nencki/Cognition/table6.txt', header=T )
+
+y[y$hs>10*y$mm & y$HOM %in% cognition_genes$Gene & y$hs>3,]
+
+x[x$hs>10*x$mm & x$HOM %in% cognition_genes$Gene & x$hs>3,]
+
+```
+
+**Kcnh7** nicest example robustly expressed in fetal astro, in the mouse it increases with age
+**Btn2a2** correct, involved in inhibition of immune response
+**Coro1c** perhaps, induced by serum stimulation of fibroblasts glioblastomas express high levels involved in cell migration
+**Mrc2** maybe
+**Sox11** could be...
+**SRF** who knows..
+**WDR76**
+
+
+data for human iPSC and sorted astrocytes: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE120411
+
+Mature astrocytes, remove the following genes:
+Il17d
+Mylk
+Rnf43 - protein expression is very high in both glia and neurons
+
+Manually checked the following list:
+
+```{r}
+
+cognition_genes[! cognition_genes$Gene %in% y$HOM, ]
+
+```
+
+** BEST EXEMPLES **
+**CYSTM1** two fold upregulation in mature human astrocytes, 4 times higher than in neurons, mouse neurons have the same level that astrocytes protein expression low a checquer!!
+
+
+** POSSIBLY MABY **
+**BTN2A1** no homologs in Mouse, expressed weakly in astrocytes and neurons
+**HMGN4** no homologs in Mouse, expressed weakly in mature astrocytes, neurons and other cells
+**HIST1H2AI** and **HIST1H2AJ** **HIST1H4L** no homologs highly expressed in fetal astrocytes
+**ZSCAN31** no homologs in Mouse, expressed in both neurons and astrocytes
+**KIAA0319**
+**DCAF16**
+
+
+
