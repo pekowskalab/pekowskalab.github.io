@@ -1,0 +1,56 @@
+---
+title: "Publications"
+output: distill::distill_article
+---
+
+<link rel="stylesheet" href="styles.css" type="text/css">
+
+
+## 2018
+
+**Pękowska A.**., Klaus B, Xiang W., Severino J., Daigle N., Klein F.A., Oleś M., Casellas R., Ellenberg J., Steinmetz L.M.S., Bertone P. * and Huber W.* Gain of CTCF-anchored chromatin loops marks the exit from naive pluripotency. *Cell Systems* 2018 Nov. 28; 7(5):482-495
+
+Delgado-Benito V, Rosen DB, Wang Q, Gazumyan A., Pai J. A., Oliveira, TY, Sundaravinayagam D., Zhang W., Andreani M, Keller L., Kieffer-Kwon KR., **Pękowska A.**, Jung S., Driesner M., Subbotin RI., Casellas R., Chait, BT., Nussenzweig, MC., Di Virgilio M., The Chromatin Reader ZMYND8 Regulates Igh Enhancers to Promote Immunoglobulin Class Switch Recombination. *Molecular Cell*, 2018 September
+
+Vian L.#, **Pękowska A.**#, Rao SSR.#, Kieffer-Kwon K-R#, Jung S#, Baranello L., Huang SC., El Khattabi L., Dose M., Pruett N., Sanborn AL., Canela A., Maman Y., Oksanen A., Resch W., Li X., Lee B., Kovalchuk AL., Tang Z., Nelson S., Di Pierro M., Cheng RR., Machol I., St Hilaire BG., Durand NC., Shamim MS., Stamenova EK., Onuchic JN., Ruan Y., Nussenzweig A., Levens D., Aiden EL., Casellas R. The energetics and physiological impact of cohesin extrusion. *Cell* 2018 May 17;173(5):1165-1178.e20.
+
+## 2017
+Schwarzer W.#, Abdennur N.#, Goloborodko A.#, **Pękowska A.**, Fudenberg G., Loe-Mie Y., Fonseca N.A., Huber W, Haering C., Mirny L., Spitz F. Two independent modes of chromosome organization are revealed by cohesin removal. *Nature* 2017 Nov 2;551(7678):51-56
+
+Kieffer-Kwon K.R.#, Nimura K.#, Rao S.S.P#., Xu J#., Jung S, **Pękowska A.**, Dose M., Stevens E., Mathe E., Dong P., Huang SH, Ricci M.A., Baranello L., Zhenh Y., Ardori FT., Resch W., Stavreva D., Nelson S., McAndrew M., Casellas A., Finn E., Gregory C., St. Hilaire BG., Johnson S.M., Dubois W., Cosma M.P., Batchelor E., Levens D., Phair RD., Misteli T., Ressarollo L., Hager G., Lakadamyali M., Liu Z., Floer M., Shroff H., Lieberman Aiden E., & Casellas R. Myc Regulates Chromatin Decompaction and Nuclear Architecture during B Cell Activation. *Molecular Cell* 2017;67(4):566-578.
+
+Canela A.#, Maman Y.#, Jung S., Wong N., Callen E., Day A., Kieffer-Kwon K-R., **Pękowska A.**, Zhang H., Rao SSP., Huang SH., Mckinnon P., Aplan P.D., Pommier Y., Lieberman Aiden E., Casellas R. & Nussenzweig A. Genome Organization Drives Chromosome Fragility. *Cell* 2017;170(3):507-521.
+
+## 2015
+
+Grubert F.#, Zaugg JB.#, Kasowski M.#, Ursu O., Spacek DV., Martin AR., Greenside P., Srivas R., Phanstiel DH., **Pękowska A.**, Heidari N., Euskirchen G., Huber W., Pritchard JK., Bustamante CD., Steinmetz LM., Kundaje A., Snyder M. Genetic Control of Chromatin States in Humans Involves Local and Distal Chromosomal Interactions Article Genetic Control of Chromatin States in Humans Involves Local and Distal Chromosomal Interactions. *Cell* 2015;162(5):1–15.
+
+
+Velten L., Anders S, **Pękowska A.**, Järvelin AI., Huber W., Pelechano V., et al. Single-cell polyadenylation site mapping reveals 3’ isoform choice variability. *Molecular Systems Biology* 2015;11(6):812.
+
+
+Zacarías-Cabeza J., Belhocine M., Vanhille L., Cauchy P., Koch F., **Pękowska A.**, Fenouil R., Bergon A., Gut M., Gut I., Eick D., Imbert J., Ferrier P., Andrau JC., Spicuglia S. Transcription-Dependent Generation of a Specialized Chromatin Structure at the TCR beta Locus. *Journal of Immunology* 2015
+
+## 2014
+
+Tiberi G.#., **Pękowska A.**#., Oudin C.., Ivey A., Autret A., Prebet T., Koubi M., Lembo F., Mozziconacci MJ., Bidaut G., Chabannon C., Grimwade D., Vey N., Spicuglia S., Calmels B., Duprez E. PcG methylation of the HIST1 cluster defines an epigenetic marker of acute myeloid leukemia. *Leukemia*. 2014 January:1202–6. 
+
+## 2011
+
+**Pękowska A.**#, Benoukraf T.#, Zacarias-Cabeza J.#, Belhocine M., Koch F., Holota H., Imbert J. Andrau JC., Ferrier P., Spicuglia S. H3K4 tri-methylation provides an epigenetic signature of active enhancers. *EMBO Journal*. 2011 July:1–13. 
+
+**Pękowska A.**, Zacarias-Cabeza J., Jinsong J., Pierre F., Salvatore. S. The role of epigenetic in cancer: from molecular function to high-throughput assays. Book chapter in: *Diagnosis, Prognosis and Therapeutic Values of Gene Signatures*. 2011. 
+
+## 2010
+
+**Pękowska A.**, Benoukraf T., Ferrier P., Spicuglia S. A unique H3K4me2 profile marks tissue-specific gene regulation. *Genome Research* 2010 Nov; 20(11):1493–502. 
+
+Spicuglia S., **Pękowska A.**, Zacarias-Cabeza J., Ferrier P. Epigenetic control of Tcrb gene rearrangement. *Seminairs in Immunology* 2010 Dec;22(6):330–6
+
+Spicuglia S., Zacarias-Cabeza J., **Pękowska A.**, Ferrier P. Epigenetic regulation of antigen receptor gene rearrangement. *F1000 Biol Report*. 2010 Jan, 2(March):2–6.
+
+Jia J.#, **Pękowska A.**#, Jaeger S., Benoukraf T., Ferrier P., Spicuglia S. Assessing the efficiency and significance of Methylated DNA Immunoprecipitation (MeDIP) assays in using in vitro methylated genomic DNA. *BMC Research Notes*. 2010 Jan;3. 
+
+
+
+
