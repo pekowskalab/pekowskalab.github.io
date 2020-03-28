@@ -8,7 +8,7 @@ output: distill::distill_article
 ## 2019
 
 Petermann F., **Pękowska A.**, Johnson C.A., Jankovic D., Shih HY., Jiang K., Hudson W.H., Brooks S.R., Sun HW., Villarino A.V., Yao C., Singleton K., Akondy R.S., Kanno Y., Sher A., Casellas R., Ahmed R., O'Shea J.J.
-The Magnitude of IFN-γ Responses Is Fine-Tuned by DNA Architecture and the Non-coding Transcript of Ifng-as1. **Molecular Cell** 2019 Sept. 19;75(6):1229-1242.
+The Magnitude of IFN-γ Responses Is Fine-Tuned by DNA Architecture and the Non-coding Transcript of Ifng-as1. *Molecular Cell* 2019 Sept. 19;75(6):1229-1242.
 
 ## 2018
 
