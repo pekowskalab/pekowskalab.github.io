@@ -1,5 +1,5 @@
 ---
-title: "Evolutionary and functional genomics of astrocytes
+title: "Chromatin Biology and Epigenomics
         "
 date: "`r Sys.Date()`"
 output: distill::distill_article
