@@ -1,14 +1,18 @@
 ---
-title: "We are hiring!"
+title: "Open PhD student positions"
 output: distill::distill_article
 ---
 
 <link rel="stylesheet" href="styles.css" type="text/css">
 
 
-## Ph.D. students
-We are seeking two Ph.D. students to join our lab and to identify and characterize genetic and epigenetic bases of astrocyte identity and functions. The successful candidates will be using cutting edge high throughput sequencing based methods (ChIP-seq, RNA-seq, ATAC-seq, Hi-C) and cellular models to decipher the regulatory principles underlying astrocyte biology in mammals.  
+We are seeking two Ph.D. students to join our lab. 
 
-Contact us (a.pekowska [at] nencki.gov.pl) and apply through the web system at the Nencki Institute: http://www.nencki.gov.pl/rejestracja-online
+In one project the successful applicant, will use ChIP-seq and ATAC-seq and reporter assays to identify and characterize the regulome of astrocytes in humans. 
+
+In the second project, the PhD student will identify factors regulating the functions of CTCF – one of the major architectural proteins in the mammalian genome.
+ 
+
+Contact us (a.pekowska [at] nencki.edu.pl) and apply through the web system at the Nencki Institute: http://www.nencki.gov.pl/rejestracja-online
 
 
