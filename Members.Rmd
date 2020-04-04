@@ -35,7 +35,7 @@ ___________________________________________
 </div>
 
 <div class = "col-md-1">
-<br><br>**Aleksandra Piotrowska, Research Technitian**
+<br><br>**Aleksandra Piotrowska, Research Technician**
 
 I am interested in the molecular bases of inheritance, in particular, in how epigenetics shapes the identity of a cell. 
 
