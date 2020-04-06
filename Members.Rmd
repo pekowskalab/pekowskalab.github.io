@@ -47,6 +47,21 @@ Besides my implication in the lab, I study bioethics at the University of Warsaw
 
 ___________________________________________
 
+<img src="PZARE.jpg" style="width:25%; border:1px solid; margin-right: 20px" align="left">
+</div>
+
+<div class = "col-md-1">
+<br><br>**Peyman Zare, Research Technician**
+
+I received a DVM degree from The School of Veterinary Medicine, Shiraz University in Iran under the supervision of Prof. Naser Vesal. I was interested in avian anesthesia and analgesia (Vesal N, Zare P. 2006 Vet Anaesth Analg). I obtained a PhD in Microbiology from The Faculty of Veterinary Medicine, Urmia University in Iran, under the supervision of Prof. Mohammad Tabatabaei. I was interested in the genetics of avian disease-causing agent Pasteurella multocida (Zare P. et al. 2008 J Anim Vet Adv). 
+
+In 2002, I joined The University of Tabriz in Iran as a Microbiology Lecturer (2002-2007). After a sabbatical at the group of Prof. Ivan Rychlik at the Veterinary Research Institute, Brno, in the Czech Republic, I came back to Iran and was appointed the position of an Assistant Professor (2008-2015) and later an Associate Professor (2015-2017). My research interests were mainly focusing on the interactions between cancer cells and bacterial components (Jahanban-Esfahlan R. et al. 2017 Scientific reports; Seidi K. et al. 2018 Oncogene). I published some of my most recent work in the form of review articles (Jahanban-Esfahlan A. et al. 2019 Cancers; Jahanban-Esfahlan R. et al. 2019 Journal of Controlled Release; Ayoubi‐Joshaghani MH. et al. 2020 Biotechnology and Bioengineering).
+
+I recently joined the Dioscuri Center of Chromatin Biology and Epigenomics. I work on primary and iPS cell-derived neural cells. I am interested in the the evolutionary mechanisms that drive the diversification of astrocytes in humans. 
+
+
+___________________________________________
+
 <img src="MJANOWSKI.png" style="width:25%; border:1px solid; margin-right: 20px" align="left">
 </div>
 
