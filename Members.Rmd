@@ -6,8 +6,9 @@ output: distill::distill_article
 <link rel="stylesheet" href="styles.css" type="text/css">
 
 
-# There are **two PhD student positions** 
-## check out the details in 'Open positions'
+# [There are **three open PhD student positions!!**](https://pekowskalab.github.io/Open_positions.html)
+___________________________________________
+
 
 
 <div class = "row">
