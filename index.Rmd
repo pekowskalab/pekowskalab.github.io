@@ -17,7 +17,7 @@ output: distill::distill_article
 ## Mission of the lab
 We use stem cell models, high throughput sequencing technologies (ChIP-seq, ATAC-seq, RNA-seq, Hi-C), CRISPR-Cas9 mediated genome editing, and computational tools, to **decipher the regulatory networks orchestrating astrocyte functions in mammals and to understand the interplay between chromatin topology and gene expression**.
 
-
+We are also a part of the [**NIH Regulome Project**](https://regulome.github.io/People/index.html)
 
 ## Selected publications
 **Pękowska A.**^, Klaus B, Xiang W., Severino J., Daigle N., Klein F.A., Oleś M., Casellas R., Ellenberg J., Steinmetz L.M.S., Bertone P.^, Huber W.^ Gain of CTCF-anchored chromatin loops marks the exit from naive pluripotency. *Cell Systems* Nov. 28; 7(5):482-495
