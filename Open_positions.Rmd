@@ -1,20 +1,10 @@
 ---
-title: "Three PhD student positions"
+title: "Open positions"
 output: distill::distill_article
 ---
 
 <link rel="stylesheet" href="styles.css" type="text/css">
 
-
-**We are seeking three Ph.D. students to join our lab!** 
-
-In the first project, the successful applicant with an **experimental background**, will use ChIP-seq, ATAC-seq and Hi-C to identify and characterize the regulome of astrocytes in humans. 
-
-In the second PhD project, the successful applicant with a **bioinformatics background**, will use and develop tools to analyze the (epi)genomes of astrocytes in humans.
-
-In the third project, the PhD student with an **experimental background** will delineate the dynamics of the formation of chromatin loops.
- 
-
-Contact us (**a.pekowska [at] nencki.edu.pl**) and apply through the web system to Warsaw4PhD doctoral school: https://warsaw4phd.eu
+If you are interested in a joining the lab contact us at (**a.pekowska [at] nencki.edu.pl**).
 
 
