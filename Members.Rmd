@@ -6,13 +6,7 @@ output: distill::distill_article
 <link rel="stylesheet" href="styles.css" type="text/css">
 
 
-# [There are **three open PhD student positions!!**](https://pekowskalab.github.io/Open_positions.html)
-___________________________________________
-
-
-
 <div class = "row">
-
 <div class = "col-md-1">
 
 
@@ -76,6 +70,7 @@ Currently, my interests focus on proteins implicated in the regulation of chroma
 
 ___________________________________________
 
+
 <img src="KCIUBA.jpg" style="width:25%; border:1px solid; margin-right: 20px" align="left">
 </div>
 
@@ -88,8 +83,32 @@ Currently, I am interested in functional genomics of astrocytes. Taking advantag
 
 In my spare time I experiment with coffee and travels.
 
+___________________________________________
+
+<img src="ATRZECIECKA.jpg" style="width:25%; border:1px solid; margin-right: 20px" align="left">
+</div>
+
+<div class = "col-md-1">
+<br><br>**Anna Trzeciecka, Research Staff**
+
+My training is in medicine (MD, Medical University of Warsaw) and bioinformatics (MS, Johns Hopkins University). As an undergraduate, I gained molecular biology research experience in the Department of Immunology, Medical University of Warsaw, and in the Department of Ophthalmology, University of Eastern Finland. Subsequently, I pursued a research fellowship at Bascom Palmer Eye Institute, University of Miami, where I investigated lipid and protein profiles upon optic nerve regeneration.
+
+Currently, my research focuses on evolutionary changes of astrocytes. Using bioinformatics and experimental approaches, I am studying interspecies gene expression patterns to provide a mechanistic account for unique phenotypic features of human astrocytes.
+
+___________________________________________
+
+<img src="MMILEWSKA.jpg" style="width:25%; border:1px solid; margin-right: 20px" align="left">
+</div>
+
+<div class = "col-md-1">
+<br><br>**Malgorzata Milewska, PhD student**
+
+
+In 2019 I graduated from Warsaw University of Life Sciences with a Master's degree majoring in Molecular Biology. During my MSc studies, I worked on the detection of protein-protein interaction using a two-hybrid system. I determined a potential function of a few parasite antigens which have a significant role during Toxocara canis invasion in the human organism. 
+Currently I participate in a project on the regulation of chromatin topology. I am interested in the three-dimensional structure of the genome and the regulation of gene expression during development. Using high-throughput sequencing technologies, I would like to answer the question of how the factors associated with the CTCF influence cell development. 
+In my spare time, I am a big fan of good cuisine and long walks.
+
 </div>
 </div>
 ___________________________________________
-
 

@@ -1,6 +1,5 @@
 ---
-title: "Dioscuri Centre for Chromatin Biology and Epigenomics
-        "
+title: "Dioscuri Centre for Chromatin Biology and Epigenomics"
 date: "`r Sys.Date()`"
 output: distill::distill_article
 ---
