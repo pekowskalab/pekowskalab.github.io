@@ -22,6 +22,9 @@ We are also a part of the [**NIH Regulome Project**](https://regulome.github.io/
 [[**https://pekowskalab.nencki.edu.pl/]](https://pekowskalab.nencki.edu.pl/)
 
 ## Selected publications
+
+**Dehingia B.**, **Milewska M.**, **Janowski M.**, **Pękowska A.**^, CTCF shapes chromatin structure and gene expression in health and disease. *EMBO Rep.* Sept. 2022; 23
+
 **Pękowska A.**^, Klaus B, Xiang W., Severino J., Daigle N., Klein F.A., Oleś M., Casellas R., Ellenberg J., Steinmetz L.M.S., Bertone P.^, Huber W.^ Gain of CTCF-anchored chromatin loops marks the exit from naive pluripotency. *Cell Systems* Nov. 28; 7(5):482-495
 
 Vian L.#, **Pękowska A.**#, Rao SSR.#, Kieffer-Kwon K-R#, Jung S#, Baranello L., Huang SC., El Khattabi L., Dose M., Pruett N., Sanborn AL., Canela A., Maman Y., Oksanen A., Resch W., Li X., Lee B., Kovalchuk AL., Tang Z., Nelson S., Di Pierro M., Cheng RR., Machol I., St Hilaire BG., Durand NC., Shamim MS., Stamenova EK., Onuchic JN., Ruan Y., Nussenzweig A., Levens D., Aidn EL., Casellas R. The energetics and physiological impact of cohesin extrusion. *Cell* 2018 May 17;173(5):1165-1178.e20.
