@@ -5,14 +5,10 @@ navbar:
   right:
     - text: "Research"
       href: Research.html
-    - text: "Lab members"
-      href: Members.html
     - text: "Publications"
       href: Publications.html
     - text: "Code"
       href: Code.html
-    - text: "Open positions"
-      href: Open_positions.html
     - image: Mail.png
       href: Contact.html
 output: distill::distill_article
