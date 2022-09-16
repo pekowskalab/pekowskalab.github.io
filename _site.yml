@@ -5,8 +5,6 @@ navbar:
   right:
     - text: "Research"
       href: Research.html
-    - text: "Publications"
-      href: Publications.html
     - text: "Code"
       href: Code.html
     - image: Mail.png
