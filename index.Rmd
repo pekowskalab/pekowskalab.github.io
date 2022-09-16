@@ -18,6 +18,8 @@ We use stem cell models, high throughput sequencing technologies (ChIP-seq, ATAC
 
 We are also a part of the [**NIH Regulome Project**](https://regulome.github.io/People/index.html)
 
+Our new address [[**https://pekowskalab.nencki.edu.pl/]](https://pekowskalab.nencki.edu.pl/)
+
 ## Selected publications
 **Pękowska A.**^, Klaus B, Xiang W., Severino J., Daigle N., Klein F.A., Oleś M., Casellas R., Ellenberg J., Steinmetz L.M.S., Bertone P.^, Huber W.^ Gain of CTCF-anchored chromatin loops marks the exit from naive pluripotency. *Cell Systems* Nov. 28; 7(5):482-495
 
